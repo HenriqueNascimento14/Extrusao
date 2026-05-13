@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Modal, Image } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 
@@ -7,175 +7,163 @@ export default function Index() {
   const router = useRouter();
   const [modalVisible, setModalVisible] = useState(false);
 
-  // Função simulada de login para abrir o modal de sucesso ou erro
   const handleLogin = () => {
-    // Aqui você vai adicionar a lógica real de autenticação depois
+    // Lógica futura de autenticação
     setModalVisible(true);
   };
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <SafeAreaProvider>
+        
+        {/* Título Superior */}
         <View style={styles.header}>
-          <Text style={styles.title}>Extrusão App</Text>
-          <Text style={styles.subtitle}>Faça o login para acessar os catálogos de resina e as configurações da extrusora.</Text>
+          <Text style={styles.title}>EXTRUSÃO</Text>
         </View>
 
-        <View style={styles.formContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            keyboardType="email-address"
-            autoCapitalize="none"
+        {/* Imagem Central */}
+        <View style={styles.imageContainer}>
+          <Image 
+            source={require('../../assets/images/logo.png')}
+            style={styles.mainImage}
+            resizeMode="contain"
           />
-          <TextInput
-            style={styles.input}
-            placeholder="Senha"
-            secureTextEntry={true}
-          />
+        </View>
+
+        {/* Área de Botões */}
+        <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
             <Text style={styles.loginButtonText}>ENTRAR</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => router.push('/register')} style={styles.registerLink}>
-            <Text style={styles.registerText}>Não tem conta? <Text style={styles.registerHighlight}>Registre-se</Text></Text>
+          <TouchableOpacity 
+            onPress={() => router.push('/register')} 
+            style={styles.registerButton}
+          >
+            <Text style={styles.registerButtonText}>CADASTRAR-SE</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Modal de Aviso */}
+        {/* Modal de Aviso (PostgreSQL) */}
         <Modal
-          animationType="slide"
+          animationType="fade"
           transparent={true}
           visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
+          onRequestClose={() => setModalVisible(!modalVisible)}
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>Login em desenvolvimento!</Text>
-              <Text style={styles.modalSubText}>A integração com o banco de dados PostgreSQL ainda será feita.</Text>
+              <Text style={styles.modalSubText}>A integração com o banco de dados PostgreSQL será implementada em breve.</Text>
               <TouchableOpacity
-                style={[styles.button, styles.buttonClose]}
+                style={styles.buttonClose}
                 onPress={() => setModalVisible(!modalVisible)}
               >
-                <Text style={styles.textStyle}>Fechar</Text>
+                <Text style={styles.textStyle}>Entendi</Text>
               </TouchableOpacity>
             </View>
           </View>
         </Modal>
 
-      </SafeAreaView>
-    </SafeAreaProvider>
+      </SafeAreaProvider>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5', // Fundo cinza claro que você escolheu
-    justifyContent: 'center',
-    padding: 20,
+    backgroundColor: '#ffffff',
+    padding: 25,
   },
   header: {
     alignItems: 'center',
-    marginBottom: 40,
+    marginTop: 50,
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
+    fontSize: 42,
+    fontWeight: '900', // Bem negrito
     color: '#333',
-    marginBottom: 10,
+    letterSpacing: 2,
   },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-    paddingHorizontal: 20,
+  imageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  formContainer: {
+  mainImage: {
+    width: '85%',
+    height: 250,
+  },
+  buttonContainer: {
     width: '100%',
-  },
-  input: {
-    backgroundColor: '#FFF',
-    paddingHorizontal: 15,
-    paddingVertical: 12,
-    borderRadius: 8,
-    marginBottom: 15,
-    borderWidth: 1,
-    borderColor: '#DDD',
-    fontSize: 16,
+    paddingBottom: 30,
   },
   loginButton: {
-    backgroundColor: '#6C63FF', // O botão roxo padronizado
-    padding: 15,
-    borderRadius: 8,
+    backgroundColor: '#6C63FF',
+    padding: 18,
+    borderRadius: 12,
     alignItems: 'center',
-    marginTop: 10,
+    marginBottom: 15,
+    elevation: 3, // Sombra leve no Android
+    shadowColor: '#000', // Sombra no iOS
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
   loginButtonText: {
     color: '#FFF',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
   },
-  registerLink: {
-    marginTop: 20,
+  registerButton: {
+    padding: 15,
+    borderRadius: 12,
     alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#6C63FF',
   },
-  registerText: {
-    color: '#666',
-    fontSize: 14,
-  },
-  registerHighlight: {
+  registerButtonText: {
     color: '#6C63FF',
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: '600',
   },
   // Estilos do Modal
   centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.6)',
   },
   modalView: {
     margin: 20,
     backgroundColor: 'white',
-    borderRadius: 20,
+    borderRadius: 25,
     padding: 35,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 10,
-    padding: 10,
-    elevation: 2,
-    marginTop: 15,
+    width: '80%',
   },
   buttonClose: {
     backgroundColor: '#6C63FF',
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    marginTop: 20,
   },
   textStyle: {
     color: 'white',
     fontWeight: 'bold',
-    textAlign: 'center',
+    fontSize: 16,
   },
   modalText: {
-    marginBottom: 5,
-    textAlign: 'center',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
   },
   modalSubText: {
-    marginBottom: 15,
     textAlign: 'center',
     color: '#666',
+    lineHeight: 22,
   }
 });

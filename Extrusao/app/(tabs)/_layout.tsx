@@ -15,6 +15,8 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
         tabBarButton: HapticTab,
+        // 👇 ESTA É A LINHA QUE ESCONDE A BARRA DE ABAS INTEIRA 👇
+        tabBarStyle: { display: 'none' }, 
       }}>
       <Tabs.Screen
         name="index"
@@ -23,6 +25,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
+      {/* Você pode apagar o bloco do 'explore' se não for mais usar essa tela */}
       <Tabs.Screen
         name="explore"
         options={{
@@ -32,4 +35,4 @@ export default function TabLayout() {
       />
     </Tabs>
   );
-}
+} 
