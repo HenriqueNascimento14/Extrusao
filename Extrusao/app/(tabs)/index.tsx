@@ -1,169 +1,72 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, StatusBar, Alert } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { useRouter } from 'expo-router'; // Voltamos com o router!
 
 export default function Index() {
   const router = useRouter();
-  const [modalVisible, setModalVisible] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Lógica futura de autenticação
-    setModalVisible(true);
+    if (username === 'adm' && password === '123') {
+      // Usamos 'replace' em vez de 'push' para que o operador não 
+      // consiga voltar para a tela de login apertando o botão "Voltar" do celular
+      router.replace('/fila'); 
+    } else {
+      Alert.alert("Acesso Negado", "Usuário ou senha incorretos.");
+    }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <SafeAreaProvider>
-        
-        {/* Título Superior */}
-        <View style={styles.header}>
-          <Text style={styles.title}>EXTRUSÃO</Text>
-        </View>
+    <SafeAreaView style={styles.containerPurple}>
+      <SafeAreaProvider style={styles.centerWrapper}>
+        <StatusBar barStyle="light-content" backgroundColor="#5A189A" />
+        <View style={styles.formContainer}>
+          <Text style={styles.loginTitle}>Acesso Operacional</Text>
+          <Text style={styles.loginSubtitle}>Entre com suas credenciais</Text>
 
-        {/* Imagem Central */}
-        <View style={styles.imageContainer}>
-          <Image 
-            source={require('../../assets/images/logo.png')}
-            style={styles.mainImage}
-            resizeMode="contain"
+          <TextInput
+            style={styles.input}
+            placeholder="Usuário"
+            placeholderTextColor="#999"
+            value={username}
+            onChangeText={setUsername}
+            autoCapitalize="none"
           />
-        </View>
 
-        {/* Área de Botões */}
-        <View style={styles.buttonContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Senha"
+            placeholderTextColor="#999"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={true}
+            keyboardType="numeric"
+          />
+
           <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
             <Text style={styles.loginButtonText}>ENTRAR</Text>
           </TouchableOpacity>
-
-          <TouchableOpacity 
-            onPress={() => router.push('/register')} 
-            style={styles.registerButton}
-          >
-            <Text style={styles.registerButtonText}>CADASTRAR-SE</Text>
-          </TouchableOpacity>
         </View>
-
-        {/* Modal de Aviso (PostgreSQL) */}
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => setModalVisible(!modalVisible)}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Login em desenvolvimento!</Text>
-              <Text style={styles.modalSubText}>A integração com o banco de dados PostgreSQL será implementada em breve.</Text>
-              <TouchableOpacity
-                style={styles.buttonClose}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Entendi</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-
       </SafeAreaProvider>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-    padding: 25,
-  },
-  header: {
-    alignItems: 'center',
-    marginTop: 50,
-  },
-  title: {
-    fontSize: 42,
-    fontWeight: '900', // Bem negrito
-    color: '#333',
-    letterSpacing: 2,
-  },
-  imageContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  mainImage: {
-    width: '85%',
-    height: 250,
-  },
-  buttonContainer: {
-    width: '100%',
-    paddingBottom: 30,
+  containerPurple: { flex: 1, backgroundColor: '#5A189A' },
+  centerWrapper: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 25 },
+  formContainer: { width: '100%', alignItems: 'center' },
+  loginTitle: { fontSize: 28, fontWeight: '900', color: '#FFFFFF', marginBottom: 5 },
+  loginSubtitle: { fontSize: 16, color: '#D1C4E9', marginBottom: 35 },
+  input: {
+    width: '100%', backgroundColor: '#FFFFFF', padding: 18, borderRadius: 12,
+    marginBottom: 15, fontSize: 16, color: '#5A189A', fontWeight: 'bold',
   },
   loginButton: {
-    backgroundColor: '#6C63FF',
-    padding: 18,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginBottom: 15,
-    elevation: 3, // Sombra leve no Android
-    shadowColor: '#000', // Sombra no iOS
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    width: '100%', backgroundColor: '#FFFFFF', padding: 18, borderRadius: 12,
+    alignItems: 'center', marginTop: 10, elevation: 5,
   },
-  loginButtonText: {
-    color: '#FFF',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  registerButton: {
-    padding: 15,
-    borderRadius: 12,
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#6C63FF',
-  },
-  registerButtonText: {
-    color: '#6C63FF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  // Estilos do Modal
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.6)',
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 25,
-    padding: 35,
-    alignItems: 'center',
-    width: '80%',
-  },
-  buttonClose: {
-    backgroundColor: '#6C63FF',
-    borderRadius: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    marginTop: 20,
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  modalText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  modalSubText: {
-    textAlign: 'center',
-    color: '#666',
-    lineHeight: 22,
-  }
+  loginButtonText: { color: '#5A189A', fontSize: 18, fontWeight: 'bold' }
 });
