@@ -27,6 +27,7 @@
     },
     "plugins": [
       "expo-router",
+      "expo-notifications", 
       [
         "expo-splash-screen",
         {
@@ -43,6 +44,11 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "SEU_PROJECT_ID_AQUI"
+      }
     }
   }
 }
